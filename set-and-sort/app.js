@@ -39,7 +39,12 @@ function validateOrder(order) {
 
 function sortWithSort(myArr, order) {
   const asc = validateOrder(order);
-  const sortedArr = myArr;
+  const sortedArr = [];
+
+  myArr.forEach((element) => {
+    sortedArr.push(element);
+  });
+
   return sortedArr.sort((a, b) => (asc ? a - b : b - a));
 }
 
@@ -55,13 +60,6 @@ function sortWithMySort(myArr, order) {
     unsortedArr = myArr.filter((element) => (asc ? element > minOrMax : element < minOrMax));
   });
 
-  // overwrites myArr (?)
-  // myArr.forEach(() => {
-  //   minOrMax = asc ? Math.min(...unsortedArr) : Math.max(...unsortedArr);
-  //   sortedArr.push(minOrMax);
-  //   unsortedArr[unsortedArr.indexOf(minOrMax)] = asc
-  //     ? Math.max(...unsortedArr) : Math.min(...unsortedArr);
-  // });
   return sortedArr;
 }
 
@@ -77,7 +75,7 @@ app.get('/', (_, res) => {
     const readySet = removeDuplicateWithSet(myArr);
     const customSet = removeDuplicateWithObject(myArr);
 
-    const readySort = sortWithSort(removeDuplicateWithSet(myArr), 'asc'); // to avoid overwriting
+    const readySort = sortWithSort(readySet, 'asc');
     const customSort = sortWithMySort(customSet, 'asc');
     res.status(200).json({ duplicate: { readySet, customSet }, order: { readySort, customSort } });
 
